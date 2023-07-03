@@ -1,0 +1,13 @@
+CREATE VIEW alunos_info AS (SELECT a.matricula,a.nome,a.email,a.telefone,a.data_nasc,a.sexo,a.distincao,AVG(ad.nota) AS media FROM aluno a
+                JOIN aluno_disciplina ad WHERE ad.aluno_matr=a.matricula GROUP BY a.matricula);
+
+
+
+
+CREATE VIEW turmas_info
+AS( 
+SELECT d.nome,ad.periodo,COUNT(*) AS qtdAluno,MAX(ad.nota) AS maior_nota,MIN(ad.nota) AS menor_nota,AVG(ad.nota) AS media
+	FROM disciplina d 
+	JOIN aluno_disciplina ad 
+	WHERE d.codigo=ad.disciplina_cod
+    GROUP BY d.codigo,ad.periodo);

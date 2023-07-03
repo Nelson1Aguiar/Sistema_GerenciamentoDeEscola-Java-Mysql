@@ -1,0 +1,48 @@
+CREATE DEFINER=`root`@`localhost` TRIGGER `aluno_disciplina2_AFTER_INSERT` AFTER INSERT ON `aluno_disciplina` FOR EACH ROW BEGIN
+	 IF (SELECT AVG(nota) FROM aluno_disciplina WHERE aluno_matr = NEW.aluno_matr) = 10 THEN
+        UPDATE aluno
+        SET distincao = 'Summa Cum Laude' where
+         matricula =new.aluno_matr;
+   ELSE IF (SELECT AVG(nota) FROM aluno_disciplina WHERE aluno_matr = NEW.aluno_matr)>= 9 AND (SELECT AVG(nota) FROM aluno_disciplina WHERE aluno_matr = NEW.aluno_matr) < 10 THEN
+        UPDATE aluno
+        SET distincao = 'Magna Cum Laude'
+        WHERE matricula =new.aluno_matr;
+	else update aluno set distincao=null where matricula=new.aluno_matr;
+    END IF;
+    end if;
+END;
+
+
+
+
+CREATE DEFINER=`root`@`localhost` TRIGGER `aluno_disciplina_AFTER_UPDATE` AFTER UPDATE ON `aluno_disciplina` FOR EACH ROW BEGIN
+	IF (SELECT AVG(nota) FROM aluno_disciplina WHERE aluno_matr = NEW.aluno_matr) = 10 THEN
+        UPDATE aluno
+        SET distincao = 'Summa Cum Laude' where
+         matricula =new.aluno_matr;
+   ELSE IF (SELECT AVG(nota) FROM aluno_disciplina WHERE aluno_matr = NEW.aluno_matr)>= 9 AND (SELECT AVG(nota) FROM aluno_disciplina WHERE aluno_matr = NEW.aluno_matr) < 10 THEN
+        UPDATE aluno
+        SET distincao = 'Magna Cum Laude'
+        WHERE matricula =new.aluno_matr;
+	else update aluno set distincao=null where matricula=new.aluno_matr;
+    END IF;
+    end if;
+END;
+
+
+
+
+
+CREATE DEFINER=`root`@`localhost` TRIGGER `aluno_disciplina_AFTER_DELETE` AFTER DELETE ON `aluno_disciplina` FOR EACH ROW BEGIN
+	IF (SELECT AVG(nota) FROM aluno_disciplina WHERE aluno_matr = old.aluno_matr) = 10 THEN
+        UPDATE aluno
+        SET distincao = 'Summa Cum Laude' where
+         matricula =old.aluno_matr;
+   ELSE IF (SELECT AVG(nota) FROM aluno_disciplina WHERE aluno_matr = old.aluno_matr)>= 9 AND (SELECT AVG(nota) FROM aluno_disciplina WHERE aluno_matr = old.aluno_matr) < 10 THEN
+        UPDATE aluno
+        SET distincao = 'Magna Cum Laude'
+        WHERE matricula =old.aluno_matr;
+	else update aluno set distincao=null where matricula=old.aluno_matr;
+    END IF;
+    end if;
+END;
